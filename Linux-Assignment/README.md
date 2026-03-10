@@ -12,7 +12,7 @@ The assignment focuses on fundamental Linux concepts that are essential for **Sy
 PW-Assignments/
 │
 ├── Linux-Assignment/
-│   ├── Linux_Admin_Lab_Assignment.ipynb
+│   ├── Linux_Assignment.ipynb
 │   └── README.md
 ```
 

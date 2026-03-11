@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
@@ -11,22 +11,26 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
+
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
+
       - name: Install Python Dependencies
         run: |
           pip install flask requests pytest
+
 
       - name: Run Unit Tests
         run: |
           cd CICD-Assignment/unit-testing
           pytest
+
 
       - name: Run API Integration Tests
         run: |
@@ -35,27 +39,33 @@ jobs:
           sleep 5
           pytest test_api.py
 
+
       - name: Install k6
         run: |
           curl -L https://github.com/grafana/k6/releases/download/v0.48.0/k6-v0.48.0-linux-amd64.tar.gz -o k6.tar.gz
           tar -xzf k6.tar.gz
           sudo mv k6-v0.48.0-linux-amd64/k6 /usr/local/bin/
 
+
       - name: Run Performance Test
         run: |
           cd CICD-Assignment/performance-test
           k6 run loadtest.js
 
+
       - name: Run OWASP ZAP Security Scan
         run: |
           docker run --rm --network=host \
-            ghcr.io/zaproxy/zaproxy:stable \
-            bash -c "mkdir -p /zap/wrk && zap-baseline.py -t http://127.0.0.1:5000" || true
+          ghcr.io/zaproxy/zaproxy:stable \
+          bash -c "mkdir -p /zap/wrk && zap-baseline.py -t http://127.0.0.1:5000" || true
+
 
       - name: Build Docker Image
         run: |
           docker build -t devops-api ./CICD-Assignment/api-testing
 
+
       - name: Deploy to Staging
         run: |
-          docker run -d -p 5000:5000 devops-api      
+          docker run -d --name staging-container devops-api
+          docker ps

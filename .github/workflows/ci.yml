@@ -51,3 +51,11 @@ jobs:
           docker run --rm --network=host \
             ghcr.io/zaproxy/zaproxy:stable \
             bash -c "mkdir -p /zap/wrk && zap-baseline.py -t http://127.0.0.1:5000" || true
+
+      - name: Build Docker Image
+        run: |
+          docker build -t devops-api ./CICD-Assignment/api-testing
+
+      - name: Deploy to Staging
+        run: |
+          docker run -d -p 5000:5000 devops-api      

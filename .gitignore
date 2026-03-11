@@ -1,0 +1,28 @@
+# Python virtual environments
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# pytest cache
+.pytest_cache/
+
+# VSCode
+.vscode/
+
+# logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jenkins workspace temp files
+workspace/
+
+# API runtime files
+*.sqlite

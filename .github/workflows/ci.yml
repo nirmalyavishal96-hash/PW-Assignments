@@ -45,3 +45,7 @@ jobs:
         run: |
           cd CICD-Assignment/performance-test
           k6 run loadtest.js
+
+      - name: Run OWASP ZAP Security Scan
+        run: |
+          docker run -t owasp/zap2docker-stable zap-baseline.py -t http://127.0.0.1:5000

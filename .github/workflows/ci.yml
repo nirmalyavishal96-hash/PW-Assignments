@@ -48,7 +48,4 @@ jobs:
 
       - name: Run OWASP ZAP Security Scan
         run: |
-          docker run --rm \
-          -v $(pwd):/zap/wrk \
-          ghcr.io/zaproxy/zaproxy:stable \
-          zap-baseline.py -t http://127.0.0.1:5000
+          docker run --rm ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://127.0.0.1:5000

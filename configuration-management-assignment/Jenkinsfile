@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/nirmalyavishal96-hash/PW-Assignments.git'
+            }
+        }
+
+        stage('Move to Project Directory') {
+            steps {
+                dir('configuration-management-assignment') {
+                    sh 'ls -la'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('configuration-management-assignment') {
+                    sh 'docker build -t webapp .'
+                }
+            }
+        }
+
+        stage('Deploy Blue Environment') {
+            steps {
+                sh 'docker rm -f blue-container || true'
+                sh 'docker run -d -p 8081:80 --name blue-container webapp'
+            }
+        }
+
+        stage('Deploy Green Environment') {
+            steps {
+                sh 'docker rm -f green-container || true'
+                sh 'docker run -d -p 8082:80 --name green-container webapp'
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh 'docker ps'
+            }
+        }
+
+    }
+}
